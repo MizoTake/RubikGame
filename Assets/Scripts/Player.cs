@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
 
 	public GameObject cubes;
 	public Field filed;
+	private TouchManager touch;
 	private ReactiveProperty<int> nextFieldNum = new ReactiveProperty<int>();
 	private ReactiveProperty<Cube> checkCube = new ReactiveProperty<Cube>();
 	private int nowFiledNum = 4;
@@ -65,6 +66,7 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		touch = GetComponent<TouchManager>();
 		checkCube.Value = cubes.GetComponent<ParentCube>().centers[0].GetComponent<Cube>();
 		var controll = false;
 		nextFieldNum.Value = nowFiledNum;
@@ -91,22 +93,22 @@ public class Player : MonoBehaviour {
 			.AddTo(this);
 
 		this.UpdateAsObservable()
-			.Where(_ => (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && controll)
+			.Where(_ => (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || (touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.UP)) && controll)
 			.Subscribe(result => nextFieldNum.Value += 1)
 			.AddTo(this);
 
 		this.UpdateAsObservable()
-			.Where(_ => (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && controll)
+			.Where(_ => (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || (touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.LEFT)) && controll)
 			.Subscribe(result => nextFieldNum.Value -= 3)
 			.AddTo(this);
 
 		this.UpdateAsObservable()
-			.Where(_ => (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && controll)
+			.Where(_ => (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || (touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.DOWN)) && controll)
 			.Subscribe(result => nextFieldNum.Value -= 1)
 			.AddTo(this);
 			
 		this.UpdateAsObservable()
-			.Where(_ => (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && controll)
+			.Where(_ => (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || (touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.RIGHT)) && controll)
 			.Subscribe(result => nextFieldNum.Value += 3)
 			.AddTo(this);
 

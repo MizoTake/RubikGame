@@ -11,6 +11,7 @@ public class ParentCube : MonoBehaviour {
 	private const int CENTER_OBJECTS = 7;
 	private GameObject[] objects = new GameObject[MAX_OBJECTS];
 	public GameObject[] centers = new GameObject[CENTER_OBJECTS];
+	public Material mat;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +26,7 @@ public class ParentCube : MonoBehaviour {
 					obj.AddComponent<Cube>();
 					obj.name = "Cube " + count;
 					obj.GetComponent<Cube>().index = count;
+					obj.GetComponent<MeshRenderer>().material = mat;
 					if((x == 0 && y == 0 && z != 0) || (x == 0 && y == 0 && z == 0) ||
 						(x != 0 && y == 0 && z == 0) || (x == 0 && y != 0 && z == 0)) {
 						obj.GetComponent<Cube>().center = true;
@@ -32,7 +34,6 @@ public class ParentCube : MonoBehaviour {
 						centerCount += 1;
 					}
 					obj.transform.parent = gameObject.transform;
-
 					objects[count] = obj;
 					count += 1;
 				}
