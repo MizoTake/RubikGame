@@ -7,11 +7,12 @@ using UniRx.Triggers;
 public class Player : MonoBehaviour {
 
 	public GameObject cubes;
-	public Field filed;
+	public Field field;
 	private TouchManager touch;
+	private int moveVec;
 	private ReactiveProperty<int> nextFieldNum = new ReactiveProperty<int>();
 	private ReactiveProperty<Cube> checkCube = new ReactiveProperty<Cube>();
-	private int nowFiledNum = 4;
+	private int nowfieldNum = 4;
 	private int[,] checkPoint = new int[,] {
 		{0, -3},
 		{1, -2},
@@ -69,25 +70,25 @@ public class Player : MonoBehaviour {
 		touch = GetComponent<TouchManager>();
 		checkCube.Value = cubes.GetComponent<ParentCube>().centers[0].GetComponent<Cube>();
 		var controll = false;
-		nextFieldNum.Value = nowFiledNum;
-		transform.position = filed.objects[nowFiledNum].transform.position;
+		nextFieldNum.Value = nowfieldNum;
+		transform.position = field.objects[nowfieldNum].transform.position;
 
 		nextFieldNum
 			.Select(_ => _ >= 0 && _ <= 8)
 			.Subscribe(result => {
 				for(int i = 0; i<checkPoint.GetLength(0); i++) {
-					if(nowFiledNum == checkPoint[i, 0] && nextFieldNum.Value == checkPoint[i, 1]) {
+					if(nowfieldNum == checkPoint[i, 0] && nextFieldNum.Value == checkPoint[i, 1]) {
 						checkCube.Value = cubes.GetComponent<ParentCube>().centers[answerPoint[i, 0]].gameObject.GetComponent<Cube>();
 						checkCube.Value.Rot(answerListType[answerPoint[i, 1]], answerVector[answerPoint[i, 1]]);
 					}
 				}
 
-				result = CheckRangePoint(nowFiledNum, nextFieldNum.Value, result);
+				result = CheckRangePoint(nowfieldNum, nextFieldNum.Value, result);
 				if(result) {
-					nowFiledNum = nextFieldNum.Value;
-					transform.position = filed.objects[nextFieldNum.Value].transform.position;
+					nowfieldNum = nextFieldNum.Value;
+					StartCoroutine(MoveTarget(field.objects[nextFieldNum.Value].transform.position));
 				} else {
-					nextFieldNum.Value = nowFiledNum;
+					nextFieldNum.Value = nowfieldNum;
 				}
 			})
 			.AddTo(this);
@@ -95,25 +96,47 @@ public class Player : MonoBehaviour {
 		this.UpdateAsObservable()
 			.Where(_ => (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || 
 			(touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.UP)) && controll)
-			.Subscribe(result => nextFieldNum.Value += 1)
+			.Subscribe(_ => nextFieldNum.Value += 1)
 			.AddTo(this);
 
 		this.UpdateAsObservable()
 			.Where(_ => (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || 
 			(touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.LEFT)) && controll)
-			.Subscribe(result => nextFieldNum.Value -= 3)
+			.Subscribe(_ => nextFieldNum.Value -= 3)
 			.AddTo(this);
 
 		this.UpdateAsObservable()
 			.Where(_ => (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || 
 			(touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.DOWN)) && controll)
-			.Subscribe(result => nextFieldNum.Value -= 1)
+			.Subscribe(_ => nextFieldNum.Value -= 1)
 			.AddTo(this);
 			
 		this.UpdateAsObservable()
 			.Where(_ => (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || 
 			(touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.RIGHT)) && controll)
-			.Subscribe(result => nextFieldNum.Value += 3)
+			.Subscribe(_ => nextFieldNum.Value += 3)
+			.AddTo(this);
+
+		this.UpdateAsObservable()
+			.Where(_ => Time.frameCount % 60 == 0)
+			.Subscribe(_ => moveVec = Random.Range(0, 3))
+			.AddTo(this);
+
+		this.UpdateAsObservable()
+			.Subscribe(_ => {
+				Debug.Log(moveVec + " : " + Time.frameCount);
+				switch(moveVec) {
+					case 0:
+						transform.Rotate((Vector3.up + Vector3.right) * Random.Range(0.1f, 1f));
+						break;
+					case 1:
+						transform.Rotate((Vector3.right + Vector3.forward) * Random.Range(0.1f, 1f));
+						break;
+					case 2:
+						transform.Rotate((Vector3.forward + Vector3.up) * Random.Range(0.1f, 1f));
+						break;
+				}
+			})
 			.AddTo(this);
 
 		checkCube.
@@ -131,5 +154,19 @@ public class Player : MonoBehaviour {
 			}
 		}
 		return true;
+	}
+
+	private System.Collections.IEnumerator MoveTarget(Vector3 target) {
+		float time = 0;
+		Vector3 keepPos = transform.position;
+		while(true) {
+			transform.position = Vector3.Lerp(keepPos, target, time/10);
+			time += 1;
+			yield return new WaitForSeconds(0.01f);
+			if(time >= 10) {
+				transform.position = target;
+				break;
+			}
+		}
 	}
 }
