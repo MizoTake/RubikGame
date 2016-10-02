@@ -9,7 +9,6 @@ public class TouchManager : MonoBehaviour {
 	public FlickVector FlickProcess() {
 		FlickVector flick = FlickVector.NULL;
 		
-
 		if(Input.GetMouseButtonDown(0)){
 			startPos = Input.mousePosition;
 		}
@@ -26,7 +25,6 @@ public class TouchManager : MonoBehaviour {
 		FlickVector result = FlickVector.NULL;
 		float directionX = end.x - start.x;
 		float directionY = end.y - start.y;
-		Debug.Log(end.x + " : " + start.x);Debug.Log(end.y + " : " + start.y);
 
 		if(Mathf.Abs(directionX) > Mathf.Abs(directionY)) {
 			if(directionX > 30) {
@@ -42,7 +40,6 @@ public class TouchManager : MonoBehaviour {
 			}
 		}
 
-		Debug.Log(result + " : " + directionX + "  " + directionY);
 		return result;
 	}
 

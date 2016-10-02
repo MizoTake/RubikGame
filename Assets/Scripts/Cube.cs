@@ -12,7 +12,7 @@ public class Cube : MonoBehaviour {
 	public List<GameObject> aroundY;
 	public List<GameObject> aroundZ;
 	private const float waitSecons = 0.01f;
-	private const float rotframe = 20f;
+	private const float rotframe = 10f;
 
 	/// <summary>
     /// 回転軸と回転方向を決定

@@ -93,22 +93,26 @@ public class Player : MonoBehaviour {
 			.AddTo(this);
 
 		this.UpdateAsObservable()
-			.Where(_ => (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || (touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.UP)) && controll)
+			.Where(_ => (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || 
+			(touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.UP)) && controll)
 			.Subscribe(result => nextFieldNum.Value += 1)
 			.AddTo(this);
 
 		this.UpdateAsObservable()
-			.Where(_ => (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || (touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.LEFT)) && controll)
+			.Where(_ => (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || 
+			(touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.LEFT)) && controll)
 			.Subscribe(result => nextFieldNum.Value -= 3)
 			.AddTo(this);
 
 		this.UpdateAsObservable()
-			.Where(_ => (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || (touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.DOWN)) && controll)
+			.Where(_ => (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || 
+			(touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.DOWN)) && controll)
 			.Subscribe(result => nextFieldNum.Value -= 1)
 			.AddTo(this);
 			
 		this.UpdateAsObservable()
-			.Where(_ => (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || (touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.RIGHT)) && controll)
+			.Where(_ => (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || 
+			(touch.FlickProcess() != FlickVector.NULL && touch.FlickProcess() == FlickVector.RIGHT)) && controll)
 			.Subscribe(result => nextFieldNum.Value += 3)
 			.AddTo(this);
 
