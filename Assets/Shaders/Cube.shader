@@ -8,7 +8,6 @@
 		_MainColor("Main Color", Color) = (0, 0, 0)
 		_OutlineColor("Outline Color", Color) = (0, 0, 0)
 		_MainTex("Base", 2D) = "white" {}
-		_BumpMap("Normalmap", 2D) = "bump" {}
     }
 
     SubShader {
@@ -84,10 +83,8 @@
 			float _BumpAmt;
 			sampler2D _GrabTexture;
 			sampler2D _MainTex;
-			sampler2D _BumpMap;
 			float3 _MainColor;
 			float4 _MainTex_ST;
-			float4 _BumpMap_ST;
 			float4 _GrabTexture_TexelSize;
 			float _ScrollX;
 			
@@ -102,7 +99,6 @@
 				#endif
 				o.uvgrab.xy = (float2(o.vertex.x, o.vertex.y * scale) + o.vertex.w) * 0.5;
 				o.uvgrab.zw = o.vertex.zw;
-				o.uvbump = TRANSFORM_TEX(v.uv, _BumpMap);
 				o.uvmain = TRANSFORM_TEX(v.uv, _MainTex);
 				UNITY_TRANSFER_FOG(o,o.vertex);
 				return o;
@@ -111,13 +107,6 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float2 scroll = float2(_ScrollX, 0) * _Time.y;
-				half2 bump = UnpackNormal(tex2D(_BumpMap, i.uvbump + scroll)).rg;
-				float2 offset = bump * _BumpAmt * _GrabTexture_TexelSize.xy;
-				#ifdef UNITY_Z_0_FAR_FROM_CLIPSPACE
-					i.uvgrab.xy = offset * UNITY_Z_0_FAR_FROM_CLIPSPACE(i.uvgrab.z) + i.uvgrab.xy;
-				#else
-					i.uvgrab.xy = offset * i.uvgrab.z + i.uvgrab.xy;
-				#endif
 				half4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab));
 				fixed4 tint = tex2D(_MainTex, i.uvmain + scroll);
 				tint.rgb += _MainColor;
