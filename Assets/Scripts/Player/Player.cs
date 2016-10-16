@@ -137,10 +137,10 @@ public class Player : MonoBehaviour {
 		float time = 0;
 		Vector3 keepPos = transform.position;
 		while(true) {
-			transform.position = Vector3.Lerp(keepPos, target, time/5);
+			transform.position = Vector3.Lerp(keepPos, target, time/3);
 			time += 1;
 			yield return new WaitForSeconds(0.01f);
-			if(time >= 5) {
+			if(time >= 3) {
 				transform.position = target;
 				break;
 			}

@@ -1,7 +1,6 @@
 ﻿Shader "Custom/Cube" {
 
 	Properties {
-		_BumpAmt ("Distortion", Range(0, 128)) = 10
 		_OutlineDistance ("Outline Distance", Range(0, 0.1)) = 0
 		_OutlineSize ("Outline Size", Range(0, 2)) = 0.9
 		_ScrollX("Scroll X", Range(0.0, 1.0)) = 0.5
@@ -80,7 +79,6 @@
 				UNITY_FOG_COORDS(3)
 			};
 
-			float _BumpAmt;
 			sampler2D _GrabTexture;
 			sampler2D _MainTex;
 			float3 _MainColor;
