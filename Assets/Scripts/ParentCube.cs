@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ParentCube : MonoBehaviour {
+public class ParentCube : SingletonMonoBehaviour<ParentCube> {
 
 	public static float DISTANCE = 1.5f;
 	public static int ONE_SIZE = 2;
@@ -11,6 +11,7 @@ public class ParentCube : MonoBehaviour {
 	private const int CENTER_OBJECTS = 7;
 	private GameObject[] objects = new GameObject[MAX_OBJECTS];
 	public GameObject[] centers = new GameObject[CENTER_OBJECTS];
+	private int[] centerIndex = new int[CENTER_OBJECTS];
 	public Material mat;
 
 	// Use this for initialization
@@ -30,6 +31,7 @@ public class ParentCube : MonoBehaviour {
 					if((x == 0 && y == 0 && z != 0) || (x == 0 && y == 0 && z == 0) ||
 						(x != 0 && y == 0 && z == 0) || (x == 0 && y != 0 && z == 0)) {
 						obj.GetComponent<Cube>().center = true;
+						centerIndex[centerCount] = count;
 						centers[centerCount] = obj;
 						centerCount += 1;
 					}
@@ -66,6 +68,20 @@ public class ParentCube : MonoBehaviour {
 				cube.aroundZ = z;
 			}
 		});
+	}
+
+	public GameObject InitPositionCube() {
+		var finish = false;
+		var randomIndex = 0;
+		do{
+			randomIndex = Random.Range(0, MAX_OBJECTS);
+			for(int i = 0; i<centerIndex.Length; i++) {
+					if(randomIndex != centerIndex[i]) {
+						finish = true;
+					}
+			}
+		}while(!finish); 		
+		return objects[randomIndex];
 	}
 	
 }
