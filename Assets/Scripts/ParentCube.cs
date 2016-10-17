@@ -11,7 +11,6 @@ public class ParentCube : SingletonMonoBehaviour<ParentCube> {
 	private const int CENTER_OBJECTS = 7;
 	private GameObject[] objects = new GameObject[MAX_OBJECTS];
 	public GameObject[] centers = new GameObject[CENTER_OBJECTS];
-	private int[] centerIndex = new int[CENTER_OBJECTS];
 	public Material mat;
 
 	// Use this for initialization
@@ -31,7 +30,6 @@ public class ParentCube : SingletonMonoBehaviour<ParentCube> {
 					if((x == 0 && y == 0 && z != 0) || (x == 0 && y == 0 && z == 0) ||
 						(x != 0 && y == 0 && z == 0) || (x == 0 && y != 0 && z == 0)) {
 						obj.GetComponent<Cube>().center = true;
-						centerIndex[centerCount] = count;
 						centers[centerCount] = obj;
 						centerCount += 1;
 					}
@@ -75,10 +73,8 @@ public class ParentCube : SingletonMonoBehaviour<ParentCube> {
 		var randomIndex = 0;
 		do{
 			randomIndex = Random.Range(0, MAX_OBJECTS);
-			for(int i = 0; i<centerIndex.Length; i++) {
-					if(randomIndex != centerIndex[i]) {
-						finish = true;
-					}
+			if(randomIndex != 13) {
+				finish = true;
 			}
 		}while(!finish); 		
 		return objects[randomIndex];

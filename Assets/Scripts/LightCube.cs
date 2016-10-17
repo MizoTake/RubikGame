@@ -8,11 +8,6 @@ public class LightCube : MonoBehaviour {
 		transform.position = ParentCube.Instance.InitPositionCube().transform.position;
 		StartCoroutine(TransScale(Vector3.zero, Vector3.one));
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	private IEnumerator TransScale(Vector3 start, Vector3 target) {
 		float time = 0;

@@ -135,12 +135,13 @@ public class Player : MonoBehaviour {
 
 	private System.Collections.IEnumerator MoveTarget(Vector3 target) {
 		float time = 0;
+		float moveFarame = 3;
 		Vector3 keepPos = transform.position;
 		while(true) {
-			transform.position = Vector3.Lerp(keepPos, target, time/3);
+			transform.position = Vector3.Lerp(keepPos, target, time/moveFarame);
 			time += 1;
 			yield return new WaitForSeconds(0.01f);
-			if(time >= 3) {
+			if(time >= moveFarame) {
 				transform.position = target;
 				break;
 			}
