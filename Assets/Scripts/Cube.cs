@@ -59,19 +59,6 @@ public class Cube : MonoBehaviour {
 		StartCoroutine(LerpRotate(type, vec));
 	}
 
-	public void ChangeSideInfo(Side[] sideInfo) {
-		//float3を引数にして、Vector3から値を取得して代入？
-		//Shaderならこれでいいかも？
-		for(int i = 0; i<mySideInfo.Length; i++) {
-			//消す
-		}
-
-		mySideInfo = sideInfo;
-		for(int i = 0; i<mySideInfo.Length; i++) {
-			//表示
-		}
-	}
-
 	private IEnumerator LerpRotate(ListType type, Vector3 vec) {
 		var targets = new List<GameObject>();
 		var time = 0f;

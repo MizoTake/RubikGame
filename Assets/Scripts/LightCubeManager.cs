@@ -18,6 +18,7 @@ public class LightCubeManager : SingletonMonoBehaviour<LightCubeManager> {
 			}
 			lightCubes[i].transform.position = target.position;
 			lightCubes[i].transform.parent = target;
+			lightCubes[i].GetComponent<LightCube>().Index = target.GetComponent<Cube>().index;
 		}
 	}
 	
