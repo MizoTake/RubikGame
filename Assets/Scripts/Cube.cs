@@ -75,9 +75,9 @@ public class Cube : MonoBehaviour {
 	private IEnumerator LerpRotate(ListType type, Vector3 vec) {
 		var targets = new List<GameObject>();
 		var time = 0f;
-		var initRot = transform.rotation;
+		var initRot = transform.rotation.eulerAngles;
 		var addRot = vec * 90;
-		var targetRot = new Quaternion(initRot.x + addRot.x, initRot.y + addRot.y, initRot.z + addRot.z, initRot.w);
+		var targetRot = new Vector3(initRot.x + addRot.x, initRot.y + addRot.y, initRot.z + addRot.z);
 		nowRotation.Value = true;
 
 		switch(type) {
@@ -101,7 +101,7 @@ public class Cube : MonoBehaviour {
 
 		while(true) {
 			//実際の回転処理
-			transform.rotation = Quaternion.Slerp(initRot, targetRot, time/rotframe);
+			transform.rotation = Quaternion.Euler(Vector3.Lerp(initRot, targetRot, time/rotframe));
 			time += 1;
 			yield return new WaitForSeconds(waitSecons);
 			if(time/rotframe >= 1) {
