@@ -1,15 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LightCube : SingletonMonoBehaviour<LightCube> {
+public class LightCube : MonoBehaviour {
 
 	public int Index { get; set; }
 
 	// Use this for initialization
 	void Start () {
-		var target = ParentCube.Instance.InitPositionCube().transform;
-		transform.position = target.position;
-		gameObject.transform.parent = target;
 		StartCoroutine(TransScale(Vector3.zero, Vector3.one));
 	}
 

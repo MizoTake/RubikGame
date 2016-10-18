@@ -6,7 +6,7 @@ using UniRx;
 public class Cube : MonoBehaviour {
 
 	private const float waitSecons = 0.01f;
-	private const float rotframe = 10f;
+	private const float rotframe = 5f;
 	public int index { get; set; }
 	public bool center { get; set; }
 	public ReactiveProperty<bool> nowRotation = new ReactiveProperty<bool>(false);
